@@ -38,7 +38,7 @@ public class Reader {
     
     private static List<Movie> loadDataFromFile(){
         List<Movie> listMovies = new LinkedList<>();
-        try (BufferedReader br = new BufferedReader(new FileReader("src/ec/edu/espol/resources/data.txt"))) {
+        try (BufferedReader br = new BufferedReader(new FileReader("src/ec/edu/espol/resources/shortdata3.txt"))) {
             String line = br.readLine();
             while(line!=null) { 
                 String[] dataM = line.split(":");
@@ -76,7 +76,19 @@ public class Reader {
     }  
     
     private static void assignEdges(List<Movie> list, GraphLA<Actor> gOfB){
+        for(Movie m: list){
+            for(Actor a: m.getActors()){
+                gOfB.addVertex(a);     
+            }
+        }
         
+        for(Movie m: list){
+            for(Actor src: m.getActors()){
+                for(Actor dst: m.getActors()){
+                    gOfB.addEdge(src, dst, m);
+                }
+            }
+        }
     }
     
     public static GraphLA<Actor> cargarGraph(){
@@ -86,20 +98,17 @@ public class Reader {
     }
     
     public static void main(String[] args){
-        String l = toStringSequence();
-        System.out.println(l);
-        //cargarGraph();
-        String s = "[Núria Espert";
-        System.out.println(s.charAt(0)=='[');
         System.out.println("### TESTING ###");
-        List<Movie> lm = loadDataFromFile();
+        /*List<Movie> lm = loadDataFromFile();
         System.out.println(lm);
         for(Movie m: lm){
             for(Actor a: m.getActors()){
                 System.out.println(a.toString());
             }
             System.out.println("-----");
-        }
+        }*/
+        GraphLA<Actor> g = cargarGraph();
+        System.out.println(g);
         //System.out.println(new Actor("Hola").equals(new Actor("HOla")));
         
         /*
@@ -108,5 +117,7 @@ public class Reader {
         long final = System,nanoTime()
         System.currentTime()
         */
+        System.out.println(g.minNumEdges(new Actor("Hans Meyer"), new Actor("Kyle MacLachlan")));
+        System.out.println(g.minNumEdges(new Actor("Hans Meyer"), new Actor("Hans Meyer")));
     }
 }

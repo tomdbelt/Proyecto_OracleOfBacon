@@ -39,6 +39,15 @@ public class GraphLA<E>{
         }
         return null;
     }
+    
+    public E searchDataInGraph(E data){
+        if(data == null) return null;
+        for(Vertex<E> v: vertexes){
+            if(v.getData().equals(data))
+                return v.getData();
+        }
+        return null;
+    }
 
     private Edge<E> searchEdge(Vertex<E> src, Vertex<E> dst){
         for(Edge e: src.getEdges()){
