@@ -5,6 +5,7 @@
  */
 package ec.edu.espol.util;
 
+import ec.edu.espol.common.Movie;
 import java.util.Objects;
 
 /**
@@ -13,21 +14,21 @@ import java.util.Objects;
  * @param <E>
  */
 public class Edge<E> {
-    private int peso;
+    private Movie peso;
     private Vertex<E> vOrigen;
     private Vertex<E> vDestino;
 
-    public Edge(int peso, Vertex<E> vOrigen, Vertex<E> vDestino) {
+    public Edge(Movie peso, Vertex<E> vOrigen, Vertex<E> vDestino) {
         this.peso = peso;
         this.vOrigen = vOrigen;
         this.vDestino = vDestino;
     }
 
-    public int getPeso() {
+    public Movie getPeso() {
         return peso;
     }
 
-    public void setPeso(int peso) {
+    public void setPeso(Movie peso) {
         this.peso = peso;
     }
 
@@ -71,5 +72,9 @@ public class Edge<E> {
     @Override
     public String toString(){
         return "(" + vOrigen + "," + vDestino + "," + peso + ")";
+    }
+    
+    public String toStringMovie(){
+        return peso.toString();
     }
 }
