@@ -6,6 +6,7 @@
 package ec.edu.espol.util;
 
 import ec.edu.espol.common.Movie;
+import java.util.ArrayList;
 import java.util.Deque;
 import java.util.HashSet;
 import java.util.LinkedList;
@@ -140,10 +141,6 @@ public class GraphLA<E>{
         return vertexSrc.getEdges().size();
     }
 
-    public boolean isConnected(){
-        return connectedComponents().size()>1?false:true;
-    }
-
     public GraphLA<E> reverse(){
         GraphLA<E> rGraph = new GraphLA<>(directed);
         for(Vertex<E> v: vertexes){
@@ -163,49 +160,6 @@ public class GraphLA<E>{
             lista.add(v.getData());
         }
         return lista;
-    }
-
-    public List<Set<E>> connectedComponents(){
-        List<Set<E>> lista = new LinkedList<>();
-        GraphLA<E> reverseGraph = reverse();
-        List<E> vertRest = getVertexes();
-        while(!vertRest.isEmpty()){
-            List<E> bfsNormal = bfs(vertRest.get(0));
-            Set<E> conjBfsN = new HashSet<>(bfsNormal);
-            List<E> bfsReverse = reverseGraph.bfs(vertRest.get(0));
-            Set<E> conjBfsR = new HashSet<>(bfsReverse);
-            conjBfsN.retainAll(conjBfsR);
-            vertRest.removeAll(conjBfsN);
-            lista.add(conjBfsN);
-        }
-        return lista;
-    }
-
-    public int minNumEdges(E inicio, E fin){
-        if(inicio == null || fin == null) return -1;
-        if(inicio.equals(fin)) return 0;
-        unitaryDijkstra(inicio);
-        int x = searchVertex(fin).getDistancia();
-        cleanVertexes();
-        return x;
-    }
-
-    public List<E> caminoMinimo(E inicio, E fin){
-        List<E> list = new LinkedList<>();
-        Vertex<E> v = searchVertex(fin);
-        if(inicio == null || fin == null || v == null || inicio.equals(fin)) return list;
-        unitaryDijkstra(inicio);
-        Stack<E> pila = new Stack<>();
-        pila.push(v.getData());
-        while(v.getAntecesor() != null){
-            v = v.getAntecesor();
-            pila.push(v.getData());
-        }
-        while(!pila.empty()){
-            list.add(pila.pop());
-        }
-        cleanVertexes();
-        return list;
     }
 
     private StringBuilder toStringVertexes(){
@@ -238,65 +192,10 @@ public class GraphLA<E>{
         return toStringVertexes().toString() + " " + toStringEdges().toString();
     }
 
-    //BUSQUEDA EN ANCHURA
-    public List<E> bfs(E data){
-        List<E> result = new LinkedList<>();
-        if(data == null) return result;
-        Vertex<E> v = searchVertex(data);
-        if(v == null) return result;
-
-        Queue<Vertex<E>> cola = new LinkedList<>();
-        v.setVisited(true);       
-        cola.offer(v);
-        while(!cola.isEmpty()){
-            v = cola.poll();
-            result.add(v.getData());
-            for(Edge<E> e: v.getEdges()){
-                if(!e.getVDestino().isVisited()){
-                    e.getVDestino().setVisited(true);
-                    cola.offer(e.getVDestino());
-                }
-            }
-        }
-        cleanVertexes();
-        return result;
-    }
-
-    //BUSQUEDA EN PROFUNDIDAD
-    public List<E> dfs(E data){
-        List<E> result = new LinkedList<>();
-        if(data == null) return result;
-        Vertex<E> v = searchVertex(data);
-        if(v == null) return result;
-
-        Deque<Vertex<E>> pila = new LinkedList<>();
-        v.setVisited(true);       
-        pila.push(v);
-        while(!pila.isEmpty()){
-            v = pila.pop();
-            result.add(v.getData());
-            for(Edge<E> e: v.getEdges()){
-                if(!e.getVDestino().isVisited()){
-                    e.getVDestino().setVisited(true);
-                    pila.push(e.getVDestino());
-                }
-            }
-        }
-        cleanVertexes();
-        return result;
-    }
-
     //ALGORITMOS
-    private boolean allVertexesVisited(){
-        for(Vertex<E> v: vertexes){
-            if(!v.isVisited())
-                return false;
-        }
-        return true;
-    }
-
-    private void unitaryDijkstra(E inicio){
+    private void dijkstra(E inicio){
         Vertex<E> v = searchVertex(inicio);
+        if(v == null) throw new NullPointerException();
         PriorityQueue<Vertex<E>> cola = new PriorityQueue<>((Vertex<E> v1, Vertex<E> v2)->v1.getDistancia()- v2.getDistancia());
         v.setDistancia(0);
         cola.offer(v);
@@ -308,10 +207,125 @@ public class GraphLA<E>{
                     if(v.getDistancia()+1 < e.getVDestino().getDistancia()){
                         e.getVDestino().setDistancia(v.getDistancia()+1);
                         e.getVDestino().setAntecesor(v);
+                        e.getVDestino().setConnectAntecesor(e.getPeso());
                         cola.offer(e.getVDestino());
                     }
                 }
             }
         }
+    }
+    
+    private void bfs(E data){
+        Vertex<E> v = searchVertex(data);
+        if(v == null) throw new NullPointerException();
+
+        Queue<Vertex<E>> cola = new LinkedList<>();
+        v.setDistancia(0);      
+        cola.offer(v);
+        while(!cola.isEmpty()){
+            v = cola.poll();
+            v.setVisited(true); 
+            for(Edge<E> e: v.getEdges()){
+                if(!e.getVDestino().isVisited()){
+                    e.getVDestino().setDistancia(v.getDistancia()+1);
+                    e.getVDestino().setAntecesor(v);
+                    e.getVDestino().setConnectAntecesor(e.getPeso());
+                    cola.offer(e.getVDestino());
+                }
+            }
+        }
+    }
+
+    private void dfs(E data){
+        Vertex<E> v = searchVertex(data);
+        if(v == null) throw new NullPointerException();
+
+        Deque<Vertex<E>> pila = new LinkedList<>();
+        v.setDistancia(0);      
+        pila.push(v);
+        while(!pila.isEmpty()){
+            v = pila.pop();
+            v.setVisited(true); 
+            for(Edge<E> e: v.getEdges()){
+                if(!e.getVDestino().isVisited()){
+                    e.getVDestino().setDistancia(v.getDistancia()+1);
+                    e.getVDestino().setAntecesor(v);
+                    e.getVDestino().setConnectAntecesor(e.getPeso());
+                    pila.push(e.getVDestino());
+                }
+            }
+        }
+    }
+    
+    public int numEdgesDijkstra(E inicio, E fin){
+        if(inicio == null || fin == null) return -1;
+        if(inicio.equals(fin)) return 0;
+        dijkstra(inicio);
+        int x = searchVertex(fin).getDistancia();
+        cleanVertexes();
+        return x;
+    }
+    
+    public int numEdgesBFS(E inicio, E fin){
+        if(inicio == null || fin == null) return -1;
+        if(inicio.equals(fin)) return 0;
+        bfs(inicio);
+        int x = searchVertex(fin).getDistancia();
+        cleanVertexes();
+        return x;
+    }
+    
+    public int numEdgesDFS(E inicio, E fin){
+        if(inicio == null || fin == null) return -1;
+        if(inicio.equals(fin)) return 0;
+        dfs(inicio);
+        int x = searchVertex(fin).getDistancia();
+        cleanVertexes();
+        return x;
+    }
+
+    public List<String> getCaminoDijkstra(E inicio, E fin){
+        List<String> list = new ArrayList<>();
+        Vertex<E> v = searchVertex(fin);
+        if(inicio == null || fin == null || v == null) return list;
+        dijkstra(inicio);
+        list.add(v.getData().toString());
+        while(v.getAntecesor() != null){
+            list.add(v.getConnectAntecesor().toString());
+            v = v.getAntecesor();
+            list.add(v.getData().toString());
+        }
+        cleanVertexes();
+        return list;
+    }
+    
+    public List<String> getCaminoBFS(E inicio, E fin){
+        List<String> list = new ArrayList<>();
+        Vertex<E> v = searchVertex(fin);
+        if(inicio == null || fin == null || v == null) return list;
+        bfs(inicio);
+        list.add(v.getData().toString());
+        while(v.getAntecesor() != null){
+            list.add(v.getConnectAntecesor().toString());
+            v = v.getAntecesor();
+            list.add(v.getData().toString());
+        }
+        cleanVertexes();
+        return list;
+    }
+    
+    public List<String> getCaminoDFS(E inicio, E fin){
+        List<String> list = new ArrayList<>();
+        Vertex<E> v = searchVertex(fin);
+        if(inicio == null || fin == null || v == null) return list;
+        dfs(inicio);
+        list.add(v.getData().toString());
+        while(v.getAntecesor() != null){
+            list.add(v.getConnectAntecesor().toString());
+            v = v.getAntecesor();
+            list.add(v.getData().toString());
+        }
+        cleanVertexes();
+        return list;
     }
 }

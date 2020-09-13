@@ -5,6 +5,7 @@
  */
 package ec.edu.espol.util;
 
+import ec.edu.espol.common.Movie;
 import java.util.LinkedList;
 import java.util.Objects;
 
@@ -19,6 +20,7 @@ public class Vertex <E> {
     private boolean visited;
     private int distancia;
     private Vertex<E> antecesor;
+    private Movie connectAntecesor;
 
     public Vertex(E data){
         this.data = data;
@@ -64,6 +66,14 @@ public class Vertex <E> {
 
     public void setAntecesor(Vertex<E> antecesor) {
         this.antecesor = antecesor;
+    }
+
+    public Movie getConnectAntecesor() {
+        return connectAntecesor;
+    }
+
+    public void setConnectAntecesor(Movie connectAntecesor) {
+        this.connectAntecesor = connectAntecesor;
     }
 
     @Override

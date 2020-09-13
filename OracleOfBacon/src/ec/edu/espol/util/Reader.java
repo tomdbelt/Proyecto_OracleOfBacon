@@ -38,7 +38,7 @@ public class Reader {
     
     private static List<Movie> loadDataFromFile(){
         List<Movie> listMovies = new LinkedList<>();
-        try (BufferedReader br = new BufferedReader(new FileReader("src/ec/edu/espol/resources/shortdata3.txt"))) {
+        try (BufferedReader br = new BufferedReader(new FileReader("src/ec/edu/espol/resources/shortdata.txt"))) {
             String line = br.readLine();
             while(line!=null) { 
                 String[] dataM = line.split(":");
@@ -117,7 +117,19 @@ public class Reader {
         long final = System,nanoTime()
         System.currentTime()
         */
-        System.out.println(g.minNumEdges(new Actor("Hans Meyer"), new Actor("Kyle MacLachlan")));
-        System.out.println(g.minNumEdges(new Actor("Hans Meyer"), new Actor("Hans Meyer")));
+        //long startTime = System.nanoTime();
+        System.out.println(g.numEdgesDijkstra(new Actor("Núria Espert"), new Actor("Anna Lizaran")));
+        System.out.println(g.getCaminoDijkstra(new Actor("Núria Espert"), new Actor("Anna Lizaran")));
+        //System.out.println(g.getCaminoDijkstra(new Actor("Núria Espert"), new Actor("Núria Espert")));
+        //long endTime = System.nanoTime()-startTime;
+        //System.out.println(endTime);
+        System.out.println(g.numEdgesBFS(new Actor("Núria Espert"), new Actor("Anna Lizaran")));
+        System.out.println(g.getCaminoBFS(new Actor("Núria Espert"), new Actor("Anna Lizaran")));
+        
+        System.out.println(g.numEdgesDFS(new Actor("Núria Espert"), new Actor("Anna Lizaran")));
+        System.out.println(g.getCaminoDFS(new Actor("Núria Espert"), new Actor("Anna Lizaran")));
+        //System.out.println(g.numEdgesDijkstra(new Actor("Kevin Bacon"), new Actor("Tom Cruise")));
+        //System.out.println(g.getCaminoDijkstra(new Actor("Kevin Bacon"), new Actor("Tom Cruise")));
+        //System.out.println(g.numEdgesDijkstra(new Actor("Kevin Bacona"), new Actor("Tommy Lee Jones")));
     }
 }
