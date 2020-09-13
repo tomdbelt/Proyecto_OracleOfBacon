@@ -5,10 +5,8 @@
  */
 package ec.edu.espol.common;
 
-import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.Set;
 
 /**
  *
@@ -16,21 +14,23 @@ import java.util.Set;
  */
 public class Movie {
     private String title;
-    private int year;
     private List<Actor> actors;
 
     public Movie(String title) {
         this.title = title;
         actors = new LinkedList<>();
     }
+
+    public String getTitle() {
+        return title;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
+    }
     
     public boolean addActor(Actor act){
         return actors.add(act);
-    }
-
-    @Override
-    public String toString() {
-        return title;
     }
 
     public List<Actor> getActors() {
@@ -41,5 +41,9 @@ public class Movie {
         this.actors = actors;
     }
     
+    @Override
+    public String toString() {
+        return title;
+    }
     
 }

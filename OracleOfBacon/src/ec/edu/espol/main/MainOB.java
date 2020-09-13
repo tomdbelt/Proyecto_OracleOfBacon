@@ -35,7 +35,7 @@ public class MainOB extends Application{
         graphOfB = Reader.cargarGraph();
         mainStage = primaryStage;
         mainView = new PrincipalView();
-        mainScene = new Scene(mainView.getRoot(), 500, 500);
+        mainScene = new Scene(mainView.getRoot(), 700, 600);
         mainScene.getStylesheets().add("/ec/edu/espol/resources/StyleSheet.css");
         mainStage.setTitle("The Oracle of Bacon G7");
         mainStage.setScene(mainScene);

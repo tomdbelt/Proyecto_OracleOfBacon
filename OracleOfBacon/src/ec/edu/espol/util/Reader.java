@@ -50,28 +50,23 @@ public class Reader {
                     String[] dataA2 = dataA[1].split("\\]");
                     String[] actors = dataA2[0].split(",");
                     for(String name: actors){
-                        /*boolean separated = false;
-                        for(int i=0; i<name.length(); i++){
-                            if(name.charAt(i)=='|')
-                                separated = true;
+                        String[] infoActor = name.split("\\|");
+                        if(infoActor.length>1){
+                            name = infoActor[1];
                         }
-                        if(separated){
-                            name = name.split("\\|")[1];
-                        }*/
                         Actor act = new Actor(name);
                         pelicula.addActor(act);    
                     }
                     listMovies.add(pelicula);
-                }
-                
+                }             
                 line = br.readLine();
             }
             
         } catch (IOException ex) {
             return null;
-        }catch(StringIndexOutOfBoundsException ex){
+        }/*catch(StringIndexOutOfBoundsException ex){
             
-        }
+        }*/
         return listMovies;
     }  
     
@@ -118,18 +113,24 @@ public class Reader {
         System.currentTime()
         */
         //long startTime = System.nanoTime();
-        System.out.println(g.numEdgesDijkstra(new Actor("Núria Espert"), new Actor("Anna Lizaran")));
-        System.out.println(g.getCaminoDijkstra(new Actor("Núria Espert"), new Actor("Anna Lizaran")));
+        //System.out.println(g.numEdgesDijkstra(new Actor("Núria Espert"), new Actor("Anna Lizaran")));
+        //System.out.println(g.getCaminoDijkstra(new Actor("Núria Espert"), new Actor("Anna Lizaran")));
         //System.out.println(g.getCaminoDijkstra(new Actor("Núria Espert"), new Actor("Núria Espert")));
         //long endTime = System.nanoTime()-startTime;
         //System.out.println(endTime);
-        System.out.println(g.numEdgesBFS(new Actor("Núria Espert"), new Actor("Anna Lizaran")));
-        System.out.println(g.getCaminoBFS(new Actor("Núria Espert"), new Actor("Anna Lizaran")));
+        //System.out.println(g.numEdgesBFS(new Actor("Núria Espert"), new Actor("Anna Lizaran")));
+        //System.out.println(g.getCaminoBFS(new Actor("Núria Espert"), new Actor("Anna Lizaran")));
         
-        System.out.println(g.numEdgesDFS(new Actor("Núria Espert"), new Actor("Anna Lizaran")));
-        System.out.println(g.getCaminoDFS(new Actor("Núria Espert"), new Actor("Anna Lizaran")));
+        //System.out.println(g.numEdgesDFS(new Actor("Núria Espert"), new Actor("Anna Lizaran")));
+        //System.out.println(g.getCaminoDFS(new Actor("Núria Espert"), new Actor("Anna Lizaran")));
         //System.out.println(g.numEdgesDijkstra(new Actor("Kevin Bacon"), new Actor("Tom Cruise")));
         //System.out.println(g.getCaminoDijkstra(new Actor("Kevin Bacon"), new Actor("Tom Cruise")));
         //System.out.println(g.numEdgesDijkstra(new Actor("Kevin Bacona"), new Actor("Tommy Lee Jones")));
+        
+        
+        String p = "Ken Tanaka (actor)|Ken Tanaka";
+        String p1 = "Ken Tanaka";
+        System.out.println(p.split("\\|").length);
+        System.out.println(p1.split("\\|").length);
     }
 }
