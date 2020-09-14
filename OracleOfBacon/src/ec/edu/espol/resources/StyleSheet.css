@@ -2,12 +2,12 @@
     -fx-background-color: #f4f6ff;
 }
 
-VBox{
+.vbox{
     -fx-alignment: top-center;
     -fx-padding: 10;
 }
 
-HBox{
+.hbox{
     -fx-alignment: top-center;
     -fx-spacing: 15;
 }
@@ -83,7 +83,7 @@ HBox{
     -fx-background-color: #DEF7F7 , #DEF7F7 , white, white;
 }
 
-Button {
+.button{
     -fx-min-width: 100;
     -fx-padding: 8 8 8 8;
     -fx-background-insets: 0,0 0 5 0, 0 0 6 0, 0 0 7 0;
@@ -100,7 +100,7 @@ Button {
     -fx-text-alignment: center;
 }
 
-Button:hover{
+.button:hover{
     -fx-background-color:
             linear-gradient(from 0% 93% to 0% 100%, #2E9C9C 0%, #168C8C 100%),
             #2E9C9C,
@@ -108,7 +108,7 @@ Button:hover{
             radial-gradient(center 50% 50%, radius 100%, #4EBABA, #2E9C9C);
 }
 
-Button:pressed{
+.button:pressed{
     -fx-padding: 8 8 6 8;
     -fx-background-insets: 2 0 0 0,2 0 3 0, 2 0 4 0, 2 0 5 0;
 }

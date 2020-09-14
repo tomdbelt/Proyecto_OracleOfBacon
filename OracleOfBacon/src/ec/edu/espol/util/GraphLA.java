@@ -5,7 +5,9 @@
  */
 package ec.edu.espol.util;
 
+import com.sun.javafx.logging.PlatformLogger.Level;
 import ec.edu.espol.common.Movie;
+import java.lang.System.Logger;
 import java.util.ArrayList;
 import java.util.Deque;
 import java.util.HashSet;
@@ -261,7 +263,9 @@ public class GraphLA<E>{
         if(inicio == null || fin == null) return -1;
         if(inicio.equals(fin)) return 0;
         dijkstra(inicio);
-        int x = searchVertex(fin).getDistancia();
+        Vertex<E> v = searchVertex(fin);
+        if(v==null) return 0;
+        int x = v.getDistancia();
         cleanVertexes();
         return x;
     }
@@ -270,7 +274,9 @@ public class GraphLA<E>{
         if(inicio == null || fin == null) return -1;
         if(inicio.equals(fin)) return 0;
         bfs(inicio);
-        int x = searchVertex(fin).getDistancia();
+        Vertex<E> v = searchVertex(fin);
+        if(v==null) return 0;
+        int x = v.getDistancia();
         cleanVertexes();
         return x;
     }
@@ -279,7 +285,9 @@ public class GraphLA<E>{
         if(inicio == null || fin == null) return -1;
         if(inicio.equals(fin)) return 0;
         dfs(inicio);
-        int x = searchVertex(fin).getDistancia();
+        Vertex<E> v = searchVertex(fin);
+        if(v==null) return 0;
+        int x = v.getDistancia();
         cleanVertexes();
         return x;
     }

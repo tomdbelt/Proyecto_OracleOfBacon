@@ -15,5 +15,7 @@ public class CONSTANTES {
     public static final String RUTA_SHORT_DATA_2 = "src/ec/edu/espol/resources/shortdata2.txt";
     public static final String RUTA_SHORT_DATA_3 = "src/ec/edu/espol/resources/shortdata3.txt";
     public static final String RUTA_IMAGEN = "/ec/edu/espol/resources/img_kbacon.png";
-    public static final String RUTA_STYLE_SHEET = "/ec/edu/espol/resources/StyleSheet.css";
+    public static final String RUTA_STYLE_SHEET = "./ec/edu/espol/resources/StyleSheet.css";
+    
+    private CONSTANTES(){}
 }
