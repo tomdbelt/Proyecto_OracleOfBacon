@@ -55,7 +55,5 @@ public class Actor {
         }
         return true;
     }
-    
-    
-    
+ 
 }

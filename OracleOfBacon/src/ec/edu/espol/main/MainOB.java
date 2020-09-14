@@ -6,6 +6,7 @@
 package ec.edu.espol.main;
 
 import ec.edu.espol.common.Actor;
+import ec.edu.espol.constants.CONSTANTES;
 import ec.edu.espol.util.GraphLA;
 import ec.edu.espol.util.Reader;
 import ec.edu.espol.views.PrincipalView;
@@ -35,8 +36,8 @@ public class MainOB extends Application{
         graphOfB = Reader.cargarGraph();
         mainStage = primaryStage;
         mainView = new PrincipalView();
-        mainScene = new Scene(mainView.getRoot(), 700, 600);
-        mainScene.getStylesheets().add("/ec/edu/espol/resources/StyleSheet.css");
+        mainScene = new Scene(mainView.getRoot(), 800, 650);
+        mainScene.getStylesheets().add(CONSTANTES.RUTA_STYLE_SHEET);
         mainStage.setTitle("The Oracle of Bacon G7");
         mainStage.setScene(mainScene);
         mainStage.show();

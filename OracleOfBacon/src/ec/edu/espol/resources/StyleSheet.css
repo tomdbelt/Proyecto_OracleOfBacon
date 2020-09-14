@@ -5,22 +5,20 @@
 VBox{
     -fx-alignment: top-center;
     -fx-padding: 10;
-
 }
 
 HBox{
     -fx-alignment: top-center;
-    -fx-padding: 10;
-    -fx-spacing: 10;
+    -fx-spacing: 15;
 }
 
 #vResults {
     -fx-alignment: top-center;
-    -fx-spacing: 10;
-    -fx-min-width: 200;
+    -fx-spacing: 5;
+    -fx-pref-width: 200;
 }
 
-#txtTitleResult{
+#txtTitleAlg{
     -fx-text-alignment: center;
     -fx-font-weight: bold;
     -fx-font-size: 20;
@@ -28,17 +26,19 @@ HBox{
 }
 
 #txtActor{
-    -fx-background-color: blue;
+    -fx-font-size: 15;
+    -fx-background-color: #ABFF7E;
 }
 
 #txtMovie{
-    -fx-background-color: green;
+    -fx-font-size: 15;
+    -fx-background-color: #DCE6E7;
 }
 
 #lTitle{
     -fx-text-alignment: center;
     -fx-font-weight: bold;
-    -fx-font-size: 50;
+    -fx-font-size: 35;
     -fx-text-fill: #2E9C9C;
 }
 
@@ -82,10 +82,10 @@ HBox{
 .combo-box-base:hover{
     -fx-background-color: #DEF7F7 , #DEF7F7 , white, white;
 }
-/*
+
 Button {
-    -fx-min-width: 150;
-    -fx-padding: 8 15 15 15;
+    -fx-min-width: 100;
+    -fx-padding: 8 8 8 8;
     -fx-background-insets: 0,0 0 5 0, 0 0 6 0, 0 0 7 0;
     -fx-background-radius: 8;
     -fx-background-color:
@@ -109,33 +109,6 @@ Button:hover{
 }
 
 Button:pressed{
-    -fx-padding: 10 15 13 15;
+    -fx-padding: 8 8 6 8;
     -fx-background-insets: 2 0 0 0,2 0 3 0, 2 0 4 0, 2 0 5 0;
 }
-
-Label{
-    -fx-text-alignment: center;
-    -fx-font-weight: bold;
-    -fx-font-size: 20;
-    -fx-text-fill: #2E9C9C;
-}
-
-.text-field{
-    -fx-padding: 5 5 5 5;
-    -fx-border-radius: 5;
-    -fx-background-color: #ADE3E3 , #DEF7F7 , #DEF7F7;
-    -fx-border-color: #ADE3E3;
-    -fx-alignment: top-left;
-}
-
-.text-field:hover{
-    -fx-background-color: #DEF7F7 , #DEF7F7 , white;
-}
-
-.text-field:focused{
-    -fx-background-color: #ADE3E3 , #DEF7F7 , white, white;
-    -fx-background-radius: 6.4, 4, 5, 3;
-    -fx-background-insets: -1.4, 0, 1, 2;
-    -fx-text-alignment: justify;
-}
-*/

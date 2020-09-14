@@ -7,6 +7,7 @@ package ec.edu.espol.util;
 
 import ec.edu.espol.common.Actor;
 import ec.edu.espol.common.Movie;
+import ec.edu.espol.constants.CONSTANTES;
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
@@ -22,23 +23,9 @@ import java.util.Set;
  */
 public class Reader {
     
-    private static String toStringSequence(){
-        StringBuilder sb = new StringBuilder();
-        try(BufferedReader br = new BufferedReader(new FileReader("src/ec/edu/espol/resources/shortdata2.txt"))){
-            String line = br.readLine();
-            while(line!=null){
-                sb.append(line);
-                line = br.readLine();
-            }
-            return sb.toString();
-        }catch(IOException ex){
-            return null;
-        }    
-    }
-    
     private static List<Movie> loadDataFromFile(){
         List<Movie> listMovies = new LinkedList<>();
-        try (BufferedReader br = new BufferedReader(new FileReader("src/ec/edu/espol/resources/shortdata.txt"))) {
+        try (BufferedReader br = new BufferedReader(new FileReader(CONSTANTES.RUTA_SHORT_DATA))) {
             String line = br.readLine();
             while(line!=null) { 
                 String[] dataM = line.split(":");
@@ -90,47 +77,5 @@ public class Reader {
         GraphLA<Actor> graphOfB = new GraphLA<>(false);
         assignEdges(loadDataFromFile(), graphOfB);
         return graphOfB;
-    }
-    
-    public static void main(String[] args){
-        System.out.println("### TESTING ###");
-        /*List<Movie> lm = loadDataFromFile();
-        System.out.println(lm);
-        for(Movie m: lm){
-            for(Actor a: m.getActors()){
-                System.out.println(a.toString());
-            }
-            System.out.println("-----");
-        }*/
-        GraphLA<Actor> g = cargarGraph();
-        System.out.println(g);
-        //System.out.println(new Actor("Hola").equals(new Actor("HOla")));
-        
-        /*
-        long inicio = System.nanoTime()
-        Metodo()
-        long final = System,nanoTime()
-        System.currentTime()
-        */
-        //long startTime = System.nanoTime();
-        //System.out.println(g.numEdgesDijkstra(new Actor("Núria Espert"), new Actor("Anna Lizaran")));
-        //System.out.println(g.getCaminoDijkstra(new Actor("Núria Espert"), new Actor("Anna Lizaran")));
-        //System.out.println(g.getCaminoDijkstra(new Actor("Núria Espert"), new Actor("Núria Espert")));
-        //long endTime = System.nanoTime()-startTime;
-        //System.out.println(endTime);
-        //System.out.println(g.numEdgesBFS(new Actor("Núria Espert"), new Actor("Anna Lizaran")));
-        //System.out.println(g.getCaminoBFS(new Actor("Núria Espert"), new Actor("Anna Lizaran")));
-        
-        //System.out.println(g.numEdgesDFS(new Actor("Núria Espert"), new Actor("Anna Lizaran")));
-        //System.out.println(g.getCaminoDFS(new Actor("Núria Espert"), new Actor("Anna Lizaran")));
-        //System.out.println(g.numEdgesDijkstra(new Actor("Kevin Bacon"), new Actor("Tom Cruise")));
-        //System.out.println(g.getCaminoDijkstra(new Actor("Kevin Bacon"), new Actor("Tom Cruise")));
-        //System.out.println(g.numEdgesDijkstra(new Actor("Kevin Bacona"), new Actor("Tommy Lee Jones")));
-        
-        
-        String p = "Ken Tanaka (actor)|Ken Tanaka";
-        String p1 = "Ken Tanaka";
-        System.out.println(p.split("\\|").length);
-        System.out.println(p1.split("\\|").length);
     }
 }

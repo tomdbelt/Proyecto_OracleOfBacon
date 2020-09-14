@@ -6,8 +6,8 @@
 package ec.edu.espol.views;
 
 import ec.edu.espol.common.Actor;
+import ec.edu.espol.constants.CONSTANTES;
 import ec.edu.espol.main.MainOB;
-import java.awt.Color;
 import java.util.List;
 import java.util.ListIterator;
 import javafx.collections.FXCollections;
@@ -15,13 +15,11 @@ import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
-import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
-import javafx.scene.paint.Paint;
 
 /**
  *
@@ -41,7 +39,6 @@ public class PrincipalView {
         root = new BorderPane();
         createTopSection();
         createCenterSection();
-        instanciarIDs();
     }
 
     public BorderPane getRoot() {
@@ -55,17 +52,18 @@ public class PrincipalView {
     private void createTopSection(){
         HBox boxTitle = new HBox();
         lTitle = new Label("THE ORACLE OF BACON");
-        img = new ImageView(new Image("/ec/edu/espol/resources/img_kbacon.png", 100, 100, true, true));
-        boxTitle.getChildren().addAll(lTitle,img);
+        lTitle.setId("lTitle");
+        Label lGroup = new Label("G7");
+        lGroup.setId("lTitle");
+        VBox vTitle = new VBox();
+        vTitle.getChildren().addAll(lTitle, lGroup);
+        img = new ImageView(new Image(CONSTANTES.RUTA_IMAGEN, 100, 100, true, true));
+        boxTitle.getChildren().addAll(vTitle,img);
         root.setTop(boxTitle);
     }
     
-    private void createCenterSection(){
-        
-        
-        vCenter = new VBox();
-        
-        
+    private void createCenterSection(){      
+        vCenter = new VBox();      
         hResult = new HBox();
         hResult.setVisible(false);
         
@@ -76,10 +74,9 @@ public class PrincipalView {
         cmbSrc.getSelectionModel().select(new Actor("Kevin Bacon"));
         cmbDst.setItems(FXCollections.observableList(MainOB.graphOfB.getVertexes()));
         bFindLink = new Button("Find link");
-        bFindLink.setOnAction(e->{
-            //System.out.println(txtSrc.getText().equals(""));
-            
+        bFindLink.setOnAction(e->{           
             hResult.getChildren().clear();
+            
             HBox boxDijkstra = new HBox();
             VBox vDijkstra = new VBox();
             
@@ -89,114 +86,137 @@ public class PrincipalView {
             HBox boxDFS = new HBox();
             VBox vDFS = new VBox();
             
-            vDijkstra.setId("vResults");
-            vBFS.setId("vResults");
-            vDFS.setId("vResults");
             //SECCION DIJKSTRA
             Label lD = new Label("DIJKSTRA");
+            lD.setId("txtTitleAlg");
             long sTimeD = System.nanoTime();
             int numD = MainOB.graphOfB.numEdgesDijkstra(cmbSrc.getValue(), cmbDst.getValue());
             long eTimeD = System.nanoTime()-sTimeD;
-            Label ltimeD = new Label("Tiempo: " + eTimeD + "ns");
-            Label lnumD = new Label("Distancia: " + numD);
-            vDijkstra.getChildren().addAll(lD, ltimeD, lnumD);
-            List<String> camD = MainOB.graphOfB.getCaminoDijkstra(cmbSrc.getValue(), cmbDst.getValue());
-            ListIterator<String> litD = camD.listIterator();
-            while(litD.hasNext()){
-                String s = litD.next();
-                if(litD.previousIndex()%2==0){
-                    Label lAct = new Label(s);
-                    lAct.setId("txtActor");
-                    vDijkstra.getChildren().add(lAct);
-                    if(litD.hasNext())
-                        vDijkstra.getChildren().add(new Label("was in"));
-                }else{
-                    Label lMovie = new Label(s);
-                    lMovie.setId("txtMovie");
-                    vDijkstra.getChildren().add(lMovie);
-                    vDijkstra.getChildren().add(new Label("with"));
-                }
-            }
-            boxDijkstra.getChildren().add(vDijkstra);
-            ScrollPane sP = new ScrollPane();
-            sP.setContent(vDijkstra);
-            sP.setVbarPolicy(ScrollPane.ScrollBarPolicy.ALWAYS);
-            sP.setHbarPolicy(ScrollPane.ScrollBarPolicy.ALWAYS);
-            boxDijkstra.getChildren().add(sP);
             
+            if(numD!=Integer.MAX_VALUE){
+                Label ltimeD = new Label("Tiempo: " + eTimeD + "ns");
+                Label lnumD = new Label("Distancia: " + numD);
+                vDijkstra.getChildren().addAll(lD, ltimeD, lnumD);
+                List<String> camD = MainOB.graphOfB.getCaminoDijkstra(cmbSrc.getValue(), cmbDst.getValue());
+                ListIterator<String> litD = camD.listIterator();
+                VBox vCamDijkstra = new VBox();
+                vCamDijkstra.setId("vResults");
+                while(litD.hasNext()){
+                    String s = litD.next();
+                    if(litD.previousIndex()%2==0){
+                        Label lAct = new Label(s);
+                        lAct.setId("txtActor");
+                        vCamDijkstra.getChildren().add(lAct);
+                        if(litD.hasNext())
+                            vCamDijkstra.getChildren().add(new Label("was in"));
+                    }else{
+                        Label lMovie = new Label(s);
+                        lMovie.setId("txtMovie");
+                        vCamDijkstra.getChildren().add(lMovie);
+                        vCamDijkstra.getChildren().add(new Label("with"));
+                    }
+                }
+                boxDijkstra.getChildren().add(vCamDijkstra);
+                ScrollPane sP = new ScrollPane();
+                sP.setContent(vCamDijkstra);
+                sP.setVbarPolicy(ScrollPane.ScrollBarPolicy.ALWAYS);
+                sP.setHbarPolicy(ScrollPane.ScrollBarPolicy.ALWAYS);
+                boxDijkstra.getChildren().add(sP);
+                vDijkstra.getChildren().addAll(boxDijkstra);
+            }else{
+                boxDijkstra.getChildren().add(new Label("Lo sentimos. Resultado no Encontrado"));
+                vDijkstra.getChildren().addAll(lD, boxDijkstra);
+            }
+                
             //SECCION BFS
             Label lBFS = new Label("BFS");
+            lBFS.setId("txtTitleAlg");
             long sTimeBFS = System.nanoTime();
             int numBFS = MainOB.graphOfB.numEdgesBFS(cmbSrc.getValue(), cmbDst.getValue());
             long eTimeBFS = System.nanoTime()-sTimeBFS;
-            Label ltimeBFS = new Label("Tiempo: " + eTimeBFS + "ns");
-            Label lnumBFS = new Label("Distancia: " + numBFS);
-            vBFS.getChildren().addAll(lBFS, ltimeBFS, lnumBFS);
-            List<String> camBFS = MainOB.graphOfB.getCaminoBFS(cmbSrc.getValue(), cmbDst.getValue());
-            ListIterator<String> litBFS = camBFS.listIterator();
-            while(litBFS.hasNext()){
-                String s = litBFS.next();
-                if(litBFS.previousIndex()%2==0){
-                    Label lAct = new Label(s);
-                    lAct.setId("txtActor");
-                    vBFS.getChildren().add(lAct);
-                    if(litBFS.hasNext())
-                        vBFS.getChildren().add(new Label("was in"));
-                }else{
-                    Label lMovie = new Label(s);
-                    lMovie.setId("txtMovie");
-                    vBFS.getChildren().add(lMovie);
-                    vBFS.getChildren().add(new Label("with"));
+            
+            if(numBFS!=Integer.MAX_VALUE){
+                Label ltimeBFS = new Label("Tiempo: " + eTimeBFS + "ns");
+                Label lnumBFS = new Label("Distancia: " + numBFS);
+                vBFS.getChildren().addAll(lBFS, ltimeBFS, lnumBFS);
+                List<String> camBFS = MainOB.graphOfB.getCaminoBFS(cmbSrc.getValue(), cmbDst.getValue());
+                ListIterator<String> litBFS = camBFS.listIterator();
+                VBox vCamBFS = new VBox();
+                vCamBFS.setId("vResults");
+                while(litBFS.hasNext()){
+                    String s = litBFS.next();
+                    if(litBFS.previousIndex()%2==0){
+                        Label lAct = new Label(s);
+                        lAct.setId("txtActor");
+                        vCamBFS.getChildren().add(lAct);
+                        if(litBFS.hasNext())
+                            vCamBFS.getChildren().add(new Label("was in"));
+                    }else{
+                        Label lMovie = new Label(s);
+                        lMovie.setId("txtMovie");
+                        vCamBFS.getChildren().add(lMovie);
+                        vCamBFS.getChildren().add(new Label("with"));
+                    }
                 }
+                boxBFS.getChildren().add(vCamBFS);
+                ScrollPane sP = new ScrollPane();
+                sP.setContent(vCamBFS);
+                sP.setVbarPolicy(ScrollPane.ScrollBarPolicy.ALWAYS);
+                sP.setHbarPolicy(ScrollPane.ScrollBarPolicy.ALWAYS);
+                boxBFS.getChildren().add(sP);
+                vBFS.getChildren().addAll(boxBFS);
+            }else{
+                boxBFS.getChildren().add(new Label("Lo sentimos. Resultado no Encontrado"));
+                vBFS.getChildren().addAll(lBFS, boxBFS);
             }
-            boxBFS.getChildren().add(vBFS);
-            ScrollPane sP2 = new ScrollPane();
-            sP2.setContent(vBFS);
-            sP2.setVbarPolicy(ScrollPane.ScrollBarPolicy.ALWAYS);
-            sP2.setHbarPolicy(ScrollPane.ScrollBarPolicy.ALWAYS);
-            boxBFS.getChildren().add(sP2);
             
             //SECCION DFS
             Label lDFS = new Label("DFS");
+            lDFS.setId("txtTitleAlg");
             long sTimeDFS = System.nanoTime();
             int numDFS = MainOB.graphOfB.numEdgesDFS(cmbSrc.getValue(), cmbDst.getValue());
             long eTimeDFS = System.nanoTime()-sTimeDFS;
-            Label ltimeDFS = new Label("Tiempo: " + eTimeDFS + "ns");
-            Label lnumDFS = new Label("Distancia: " + numDFS);
-            vDFS.getChildren().addAll(lDFS, ltimeDFS, lnumDFS);
-            List<String> camDFS = MainOB.graphOfB.getCaminoDFS(cmbSrc.getValue(), cmbDst.getValue());
-            ListIterator<String> litDFS = camDFS.listIterator();
-            while(litDFS.hasNext()){
-                String s = litDFS.next();
-                if(litDFS.previousIndex()%2==0){
-                    Label lAct = new Label(s);
-                    lAct.setId("txtActor");
-                    vDFS.getChildren().add(lAct);
-                    if(litDFS.hasNext())
-                        vDFS.getChildren().add(new Label("was in"));
-                }else{
-                    Label lMovie = new Label(s);
-                    lMovie.setId("txtMovie");
-                    vDFS.getChildren().add(lMovie);
-                    vDFS.getChildren().add(new Label("with"));
-                }
-            }
-            boxDFS.getChildren().add(vDFS);
-            ScrollPane sP3 = new ScrollPane();
-            sP3.setContent(vDFS);
-            sP3.setVbarPolicy(ScrollPane.ScrollBarPolicy.ALWAYS);
-            sP3.setHbarPolicy(ScrollPane.ScrollBarPolicy.ALWAYS);
-            boxDFS.getChildren().add(sP3);
             
-            hResult.getChildren().addAll(boxDijkstra, boxBFS, boxDFS);
+            if(numDFS!=Integer.MAX_VALUE){
+                Label ltimeDFS = new Label("Tiempo: " + eTimeDFS + "ns");
+                Label lnumDFS = new Label("Distancia: " + numDFS);
+                vDFS.getChildren().addAll(lDFS, ltimeDFS, lnumDFS);
+                List<String> camDFS = MainOB.graphOfB.getCaminoDFS(cmbSrc.getValue(), cmbDst.getValue());
+                ListIterator<String> litDFS = camDFS.listIterator();
+                VBox vCamDFS = new VBox();
+                vCamDFS.setId("vResults");
+                while(litDFS.hasNext()){
+                    String s = litDFS.next();
+                    if(litDFS.previousIndex()%2==0){
+                        Label lAct = new Label(s);
+                        lAct.setId("txtActor");
+                        vCamDFS.getChildren().add(lAct);
+                        if(litDFS.hasNext())
+                            vCamDFS.getChildren().add(new Label("was in"));
+                    }else{
+                        Label lMovie = new Label(s);
+                        lMovie.setId("txtMovie");
+                        vCamDFS.getChildren().add(lMovie);
+                        vCamDFS.getChildren().add(new Label("with"));
+                    }
+                }
+                boxBFS.getChildren().add(vCamDFS);
+                ScrollPane sP = new ScrollPane();
+                sP.setContent(vCamDFS);
+                sP.setVbarPolicy(ScrollPane.ScrollBarPolicy.ALWAYS);
+                sP.setHbarPolicy(ScrollPane.ScrollBarPolicy.ALWAYS);
+                boxDFS.getChildren().add(sP);
+                vDFS.getChildren().addAll(boxDFS);
+            }else{
+                boxDFS.getChildren().add(new Label("Lo sentimos. Resultado no Encontrado"));
+                vDFS.getChildren().addAll(lDFS, boxDFS);
+            }
+            
+            hResult.getChildren().addAll(vDijkstra, vBFS, vDFS);
             hResult.setVisible(true);
         });
         boxQuery.getChildren().addAll(cmbSrc, new Label("to"), cmbDst, bFindLink);
         vCenter.getChildren().addAll(boxQuery,hResult);
         root.setCenter(vCenter);
-    }
-    
-    private void instanciarIDs(){
-        lTitle.setId("lTitle");
     }
 }
